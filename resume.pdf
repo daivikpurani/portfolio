@@ -1,0 +1,110 @@
+# Daivik Purani - Software Engineer Resume
+
+## Contact Information
+- **Email**: daivik.purani@email.com
+- **Phone**: +1 (555) 123-4567
+- **Location**: San Francisco, CA
+- **GitHub**: https://github.com/daivikpurani
+- **LinkedIn**: https://linkedin.com/in/daivikpurani
+- **Website**: https://daivikpurani.dev
+
+## Professional Summary
+3+ years as a Backend Engineer — Built Kafka pipeline (150K+ events/day) infra saving $360K/year, and now working @ AWS TimestreamDB on Distributed Systems.
+
+## Professional Experience
+
+### Software Engineer - TimeStream DB Internship
+**Amazon Web Services (AWS)** | Sept 2025 - Present
+- **Tech Stack**: Java, Distributed Systems, Databases
+- Developed and enhanced distributed subsystems for Amazon's time-series database (Timestream), focusing on scalability, performance, and fault tolerance in large-scale production clusters
+- Contributed to internal query execution logic and storage layer optimizations, leveraging deep understanding of time-series data workloads
+
+### Software Engineer II - Core Platform Team
+**MediBuddy** | Aug 2021 - June 2023
+- **Tech Stack**: Java, JavaScript, Apache Kafka, TypeScript, React, Node.js, SQL, Redis, Docker, AWS, Kubernetes
+- Led the end-to-end development of a distributed Kafka-based event pipeline processing over 150,000 events per day replacing four legacy services; implemented safe retries, idempotency controls, and structured observability across services, achieving 99.99% system uptime and significantly improving traceability in workflows
+- Architected and deployed a high-throughput document ingestion microservice using Java, AWS S3 (pre-signed URLs), and Lambda; scaled to 1,500+ uploads/min under load while reducing backend load by 80% and cutting infrastructure costs by $360,000/year
+- Re-engineered monolithic lab booking systems into Redis-backed Node.js microservices, tuning PostgreSQL indexes and SQL joins to reduce booking latency from 4s to 70ms and improve bookings throughput by 200%, directly impacting 70,000+ monthly users
+- Led the AngularJS-to-React migration by introducing modular components and optimized build pipelines; improved scalability and maintainability across 1,000+ diagnostic labs, reduced rendering overhead, and delivered a faster, more consistent user experience for customer labs
+- Boosted backend API performance by 30% via deep SQL profiling, PostgreSQL query plan analysis, and strategic index optimizations; ensured consistent stability under concurrent requests in high-traffic production environments
+- Designed and integrated a comprehensive monitoring and real-time alerting stack using Amazon CloudWatch, Grafana, and log instrumentation; led on-call triage for 30+ P1/P2 production incidents, conducting root-cause analysis and coordinating immediate and long-term fixes
+
+### Research Assistant - CS Dept
+**San Francisco State University** | Jan 2025 - Present
+- **Tech Stack**: Python, AWS, Vector Databases (Pinecone), OpenAI APIs, LangChain, RAG, Embedding Models
+- Designed and deployed a production-grade semantic search engine indexing over 5,000 academic papers using RAG pipelines and Pinecone vector databases; exposed horizontally scalable, GPU-backed APIs supporting sub-second latency for 25+ concurrent users in live test environments
+- Built an AI-assisted grading system integrating static analysis, plagiarism detection, and ML-based scoring for automated evaluation of exams, and code; implemented instructor-in-the-loop review workflows, with real-time dashboards for cohort-level learning gaps and grading trends
+
+### Software Engineer - New Projects
+**Wheebox** | Aug 2020 - Dec 2020
+- **Tech Stack**: Java, Python, PostgreSQL, MongoDB, AWS Lambda, RDS, CloudWatch, WebSocket, REST APIs
+- Created and deployed a distributed online coding platform in Java (Spring Boot, REST APIs) capable of supporting 1,000+ concurrent users with sub-second feedback latency; optimized request flow, asynchronous execution, and lambdas to sustain real-time assessments under load
+- Automated hibernation of idle PostgreSQL RDS instances using AWS Lambda and CloudWatch cron triggers, reducing staging infrastructure costs by approximately $300/month while ensuring resources were automatically reactivated on demand
+
+## Education
+
+### Master of Science - Computer Science
+**San Francisco State University** | Aug 2023 - Dec 2025
+- **GPA**: 3.60/4.00
+- **Courses**: Distributed Systems, Advanced Database Systems, Software Architecture, Advanced Networks, Generative AI
+- **Teaching Assistant**: Advanced Algorithms | Generative AI
+
+### Bachelor of Engineering (Hons.) - Computer Science
+**Birla Institute of Technology and Science, Pilani** | Aug 2017 - May 2021
+- **Courses**: Database Systems, Operating Systems, Object Oriented Design Patterns, Data Structures & Algorithms, Computer Networks
+- **Research Assistant**: Software Engineering
+
+## Selected Projects
+
+### Distributed SQL Query Engine
+**GitHub**: https://github.com/daivikpurani/distributed-sql-engine
+- Designed and implemented a simplified distributed SQL engine in Java with gRPC-based coordinator and execution nodes; supported basic SELECT, WHERE, and JOIN queries across partitioned datasets using parallel execution and rule-based query planning
+- Simulated fault tolerance using check pointing and retry logic for failed worker nodes; added instrumentation hooks for tracing query lifecycle, execution trees, and node-level timing to showcase understanding of distributed data processing and optimization internals
+
+### Visual SQL Query Plan Explorer
+**GitHub**: https://github.com/daivikpurani/sql-plan-explorer
+- Built a web-based visualization tool for PostgreSQL EXPLAIN ANALYZE output, rendering execution plans with operator cost, row estimates, timing data, and bottleneck highlighting; designed for developers and DBAs optimizing large SQL queries
+- Implemented a backend parser in Python and interactive React frontend for plan tree navigation, with an "Index Advisor" feature that recommends missing indexes based on query plan heuristics and schema metadata
+
+## Technical Skills
+
+### Languages
+- **Expert**: Java, Python, SQL
+- **Advanced**: TypeScript, JavaScript, C++, C
+- **Intermediate**: Bash, Node.js, Shell Scripting
+
+### Frameworks & APIs
+- **Backend**: Spring Boot, Express.js, FastAPI, gRPC, REST, OpenAPI
+- **Frontend**: React, WebSockets
+- **AI/ML**: LangChain
+
+### Databases & Storage
+- **Relational**: PostgreSQL, MySQL
+- **NoSQL**: MongoDB, DynamoDB, Redis
+- **Specialized**: RocksDB, InfluxDB, Pinecone, HDFS, Amazon S3
+
+### Cloud & Infrastructure
+- **Cloud**: AWS (EC2, Lambda, S3, RDS, IAM, CloudWatch)
+- **Containers**: Docker, Kubernetes
+- **Monitoring**: Prometheus, Grafana
+- **DevOps**: GitHub Actions, Terraform, CI/CD, Linux
+- **Streaming**: Apache Kafka
+- **Architecture**: Distributed Systems, Microservices, Concurrency, Query Optimization, Fault Tolerance
+
+## Key Achievements
+- **$360K/year** infrastructure cost savings through optimized microservices architecture
+- **150K+ events/day** processing capacity with 99.99% uptime
+- **200% improvement** in booking throughput (4s → 70ms latency)
+- **30% boost** in backend API performance through SQL optimization
+- **1,500+ uploads/min** document processing capacity
+- **5,000+ academic papers** indexed in semantic search engine
+- **1,000+ concurrent users** supported in distributed coding platform
+
+## Additional Information
+- Available for immediate start
+- Willing to relocate
+- Open to remote work opportunities
+- Strong problem-solving and analytical skills
+- Excellent communication and teamwork abilities
+- Experience with on-call production support and incident management
+- Proven track record of leading technical projects and mentoring team members
