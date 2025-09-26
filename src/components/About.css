@@ -28,7 +28,7 @@
 }
 
 .about-card {
-  background: white;
+  background: var(--bg-primary);
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: var(--shadow-sm);
@@ -83,7 +83,7 @@
 }
 
 .stat-card {
-  background: white;
+  background: var(--bg-primary);
   padding: 1.5rem;
   border-radius: 1rem;
   text-align: center;
@@ -156,12 +156,12 @@
   height: 1rem;
   background: var(--primary-color);
   border-radius: 50%;
-  border: 3px solid white;
+  border: 3px solid var(--bg-primary);
   box-shadow: var(--shadow-sm);
 }
 
 .timeline-content {
-  background: white;
+  background: var(--bg-primary);
   padding: 1.5rem;
   border-radius: 0.75rem;
   box-shadow: var(--shadow-sm);
@@ -236,7 +236,7 @@
 }
 
 .education-card {
-  background: white;
+  background: var(--bg-primary);
   padding: 1.5rem;
   border-radius: 0.75rem;
   box-shadow: var(--shadow-sm);
@@ -304,7 +304,7 @@
 }
 
 .cert-card {
-  background: white;
+  background: var(--bg-primary);
   padding: 1rem;
   border-radius: 0.75rem;
   box-shadow: var(--shadow-sm);

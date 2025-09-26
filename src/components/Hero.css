@@ -4,7 +4,8 @@
   align-items: center;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--border-color) 100%);
+  padding: 2rem 0;
 }
 
 .hero-background {
@@ -104,6 +105,65 @@
   color: var(--text-secondary);
 }
 
+/* AWS Badge */
+.aws-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #ff9900, #ff6600);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+  animation: pulse 2s infinite;
+}
+
+.aws-icon {
+  font-size: 1.2rem;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Hero Achievements */
+.hero-achievements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-primary);
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-color);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.achievement-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color);
+}
+
+.achievement-icon {
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
 .hero-buttons {
   display: flex;
   gap: 1rem;
@@ -122,12 +182,13 @@
   justify-content: center;
   width: 50px;
   height: 50px;
-  background: white;
+  background: var(--bg-primary);
   border-radius: 50%;
   color: var(--primary-color);
   font-size: 1.25rem;
   box-shadow: var(--shadow-md);
   transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
 }
 
 .hero-social a:hover {
@@ -180,7 +241,7 @@
 
 .placeholder-icon {
   font-size: 8rem;
-  color: white;
+  color: #ff9900;
   opacity: 0.8;
 }
 
@@ -194,12 +255,13 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: white;
+  background: var(--bg-primary);
   padding: 0.5rem 1rem;
   border-radius: 2rem;
   box-shadow: var(--shadow-md);
   font-size: 0.875rem;
   font-weight: 500;
+  border: 1px solid var(--border-color);
 }
 
 .status-dot {
@@ -253,6 +315,10 @@
     font-size: 3rem;
   }
 
+  .hero-achievements {
+    justify-content: center;
+  }
+
   .image-container {
     width: 300px;
     height: 300px;
@@ -274,6 +340,17 @@
 
   .hero-description {
     font-size: 1rem;
+  }
+
+  .hero-achievements {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .achievement-item {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
   }
 
   .hero-buttons {

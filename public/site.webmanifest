@@ -1,0 +1,16 @@
+{
+  "name": "Daivik Purani - Software Engineer Portfolio",
+  "short_name": "Daivik Purani",
+  "description": "Software Engineer at AWS TimestreamDB with expertise in distributed systems, Kafka, and database optimization",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

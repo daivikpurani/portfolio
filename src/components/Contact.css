@@ -1,5 +1,5 @@
 .contact {
-  background: white;
+  background: var(--bg-primary);
 }
 
 .contact-grid {
@@ -40,16 +40,19 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: white;
+  background: var(--bg-primary);
   border-radius: 0.75rem;
   margin-bottom: 1rem;
   text-decoration: none;
   transition: all 0.3s ease;
   box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  color: inherit;
 }
 
 .contact-item:hover {
   box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .contact-icon {
@@ -98,18 +101,20 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: white;
+  background: var(--bg-primary);
   border-radius: 0.75rem;
   text-decoration: none;
   color: var(--text-primary);
   font-weight: 500;
   transition: all 0.3s ease;
   box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
 }
 
 .social-link:hover {
   background: var(--social-color);
   color: white;
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
@@ -137,7 +142,15 @@
   border-radius: 0.5rem;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: white;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: inherit;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: var(--text-light);
+  opacity: 0.7;
 }
 
 .form-group input:focus,
@@ -145,6 +158,19 @@
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group input.error,
+.form-group textarea.error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-group .error-message {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  display: block;
 }
 
 .form-group textarea {
@@ -177,10 +203,20 @@
   100% { transform: rotate(360deg); }
 }
 
-.success-message {
+.form-success-message {
   margin-top: 1rem;
   padding: 1rem;
   background: #10b981;
+  color: white;
+  border-radius: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.form-error-message {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #ef4444;
   color: white;
   border-radius: 0.5rem;
   text-align: center;

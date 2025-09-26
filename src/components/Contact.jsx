@@ -14,6 +14,7 @@ const Contact = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [errors, setErrors] = useState({});
 
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -27,20 +28,63 @@ const Contact = () => {
     });
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    
+    if (!formData.subject.trim()) {
+      newErrors.subject = 'Subject is required';
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = 'Message is required';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateForm()) {
+      return;
+    }
+    
     setIsSubmitting(true);
     
-    // Simulate form submission
-    setTimeout(() => {
+    try {
+      // Create mailto link for now - in production, you'd use a service like EmailJS or Formspree
+      const mailtoLink = `mailto:${personalInfo.email}?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(
+        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+      )}`;
+      
+      window.open(mailtoLink);
+      
       setIsSubmitting(false);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
+      setErrors({});
       
       setTimeout(() => {
         setSubmitStatus(null);
       }, 3000);
-    }, 2000);
+    } catch (error) {
+      setIsSubmitting(false);
+      setSubmitStatus('error');
+      setTimeout(() => {
+        setSubmitStatus(null);
+      }, 3000);
+    }
   };
 
   const contactInfo = [
@@ -194,7 +238,9 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       placeholder="Your full name"
+                      className={errors.name ? 'error' : ''}
                     />
+                    {errors.name && <span className="error-message">{errors.name}</span>}
                   </div>
 
                   <div className="form-group">
@@ -207,7 +253,9 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       placeholder="your.email@example.com"
+                      className={errors.email ? 'error' : ''}
                     />
+                    {errors.email && <span className="error-message">{errors.email}</span>}
                   </div>
 
                   <div className="form-group">
@@ -220,7 +268,9 @@ const Contact = () => {
                       onChange={handleChange}
                       required
                       placeholder="What's this about?"
+                      className={errors.subject ? 'error' : ''}
                     />
+                    {errors.subject && <span className="error-message">{errors.subject}</span>}
                   </div>
 
                   <div className="form-group">
@@ -233,7 +283,9 @@ const Contact = () => {
                       required
                       rows="5"
                       placeholder="Tell me about your project or just say hello!"
+                      className={errors.message ? 'error' : ''}
                     />
+                    {errors.message && <span className="error-message">{errors.message}</span>}
                   </div>
 
                   <motion.button
@@ -258,12 +310,23 @@ const Contact = () => {
 
                   {submitStatus === 'success' && (
                     <motion.div
-                      className="success-message"
+                      className="form-success-message"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -20 }}
                     >
                       ✓ Message sent successfully! I'll get back to you soon.
+                    </motion.div>
+                  )}
+
+                  {submitStatus === 'error' && (
+                    <motion.div
+                      className="form-error-message"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                    >
+                      ✗ Something went wrong. Please try again or contact me directly.
                     </motion.div>
                   )}
                 </form>

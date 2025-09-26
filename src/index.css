@@ -171,7 +171,7 @@ a:hover {
 
 /* Cards */
 .card {
-  background: white;
+  background: var(--bg-primary);
   border-radius: 1rem;
   padding: 1.5rem;
   box-shadow: var(--shadow-sm);

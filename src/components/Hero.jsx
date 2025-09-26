@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaEnvelope, FaDownload, FaCode, FaDatabase } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaEnvelope, FaDownload, FaCode, FaDatabase, FaAws, FaCloud, FaRocket, FaChartLine } from 'react-icons/fa';
 import { personalInfo } from '../data/portfolioData';
 import './Hero.css';
 
@@ -10,10 +10,10 @@ const Hero = () => {
   const [textIndex, setTextIndex] = useState(0);
 
   const texts = [
-    'Software Engineer',
-    'Database Specialist',
-    'Full Stack Developer',
-    'Cloud Architect'
+    'Software Engineer @ AWS',
+    'TimestreamDB Specialist',
+    'Distributed Systems Expert',
+    'Cloud Infrastructure Architect'
   ];
 
   useEffect(() => {
@@ -118,6 +118,17 @@ const Hero = () => {
           animate="visible"
         >
           <motion.div className="hero-text" variants={itemVariants}>
+            {/* AWS Badge */}
+            <motion.div
+              className="aws-badge"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
+              <FaAws className="aws-icon" />
+              <span>Currently at Amazon Web Services</span>
+            </motion.div>
+
             <motion.h1
               className="hero-title"
               initial={{ scale: 0.5, opacity: 0 }}
@@ -143,6 +154,25 @@ const Hero = () => {
             >
               {personalInfo.bio}
             </motion.p>
+
+            {/* Key Achievements */}
+            <motion.div
+              className="hero-achievements"
+              variants={itemVariants}
+            >
+              <div className="achievement-item">
+                <FaChartLine className="achievement-icon" />
+                <span>150K+ events/day processed</span>
+              </div>
+              <div className="achievement-item">
+                <FaCloud className="achievement-icon" />
+                <span>$360K annual savings</span>
+              </div>
+              <div className="achievement-item">
+                <FaRocket className="achievement-icon" />
+                <span>99.99% uptime achieved</span>
+              </div>
+            </motion.div>
 
             <motion.div
               className="hero-buttons"
@@ -198,12 +228,12 @@ const Hero = () => {
           >
             <div className="image-container">
               <div className="image-placeholder">
-                <FaDatabase className="placeholder-icon" />
+                <FaAws className="placeholder-icon" />
               </div>
               <div className="image-overlay">
                 <div className="status-indicator">
                   <div className="status-dot"></div>
-                  <span>Available for work</span>
+                  <span>Building at AWS</span>
                 </div>
               </div>
             </div>

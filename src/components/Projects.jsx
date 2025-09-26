@@ -15,6 +15,8 @@ const Projects = () => {
   const [sortBy, setSortBy] = useState('updated');
   const [viewMode, setViewMode] = useState('grid'); // grid or list
   const [githubStats, setGithubStats] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [projectsPerPage] = useState(6);
 
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -84,6 +86,17 @@ const Projects = () => {
           return 0;
       }
     });
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredAndSortedProjects.length / projectsPerPage);
+  const startIndex = (currentPage - 1) * projectsPerPage;
+  const endIndex = startIndex + projectsPerPage;
+  const currentProjects = filteredAndSortedProjects.slice(startIndex, endIndex);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, searchTerm, sortBy]);
 
   const getCategoryIcon = (category) => {
     switch (category) {
@@ -269,7 +282,7 @@ const Projects = () => {
             variants={containerVariants}
           >
             <AnimatePresence mode="wait">
-              {filteredAndSortedProjects.map((project) => (
+              {currentProjects.map((project) => (
                 <motion.div
                   key={project.id}
                   className="project-card"
@@ -348,6 +361,44 @@ const Projects = () => {
               ))}
             </AnimatePresence>
           </motion.div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <motion.div className="pagination" variants={itemVariants}>
+              <div className="pagination-info">
+                Showing {startIndex + 1}-{Math.min(endIndex, filteredAndSortedProjects.length)} of {filteredAndSortedProjects.length} projects
+              </div>
+              <div className="pagination-controls">
+                <button
+                  className="pagination-btn"
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+                
+                <div className="pagination-numbers">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                    <button
+                      key={page}
+                      className={`pagination-number ${currentPage === page ? 'active' : ''}`}
+                      onClick={() => setCurrentPage(page)}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+                
+                <button
+                  className="pagination-btn"
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
+            </motion.div>
+          )}
 
           {filteredAndSortedProjects.length === 0 && (
             <motion.div className="no-projects" variants={itemVariants}>

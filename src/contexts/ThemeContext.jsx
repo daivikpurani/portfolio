@@ -17,6 +17,14 @@ export const ThemeProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    // Initialize theme on mount
+    const savedTheme = localStorage.getItem('portfolio-theme');
+    const initialTheme = savedTheme || 'light';
+    setTheme(initialTheme);
+    document.documentElement.setAttribute('data-theme', initialTheme);
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem('portfolio-theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);

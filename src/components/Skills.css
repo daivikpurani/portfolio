@@ -1,5 +1,5 @@
 .skills {
-  background: white;
+  background: var(--bg-primary);
 }
 
 .skills-content {
@@ -57,7 +57,7 @@
 }
 
 .skill-card {
-  background: white;
+  background: var(--bg-primary);
   padding: 1.5rem;
   border-radius: 1rem;
   box-shadow: var(--shadow-sm);
