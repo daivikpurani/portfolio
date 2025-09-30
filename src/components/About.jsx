@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaCode, FaDatabase, FaCloud, FaRocket, FaUsers, FaChartLine } from 'react-icons/fa';
+import { FaCode, FaDatabase, FaCloud, FaRocket, FaUsers, FaChartLine, FaTerminal } from 'react-icons/fa';
 import { personalInfo, experience, education, certifications } from '../data/portfolioData';
 import './About.css';
 
@@ -15,7 +15,8 @@ const About = () => {
     { icon: <FaCode />, number: '50+', label: 'Projects Completed' },
     { icon: <FaDatabase />, number: '10+', label: 'Database Systems' },
     { icon: <FaCloud />, number: '5+', label: 'Cloud Certifications' },
-    { icon: <FaRocket />, number: '3+', label: 'Years Experience' }
+    { icon: <FaRocket />, number: '3+', label: 'Years Experience' },
+    { icon: <FaTerminal />, number: '6.3M+', label: 'Lines of Code Written' }
   ];
 
   const containerVariants = {

@@ -10,7 +10,7 @@ import Footer from './components/Footer'
 import ThemeToggle from './components/ThemeToggle'
 import ParticleBackground from './components/ParticleBackground'
 
-function App() {
+function AppMinimal() {
   return (
     <ThemeProvider>
       <div className="App">
@@ -28,4 +28,4 @@ function App() {
   )
 }
 
-export default App
+export default AppMinimal

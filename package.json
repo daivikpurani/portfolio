@@ -9,7 +9,10 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "analyze-ui": "node ui-analyzer.js",
+    "screenshot": "node ui-analyzer.js",
+    "test-ui": "node ui-analyzer.js"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -27,6 +30,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "gh-pages": "^6.0.0",
+    "playwright": "^1.40.0",
     "vite": "^4.4.5"
   },
   "homepage": "https://daivikpurani.github.io/portfolio",
