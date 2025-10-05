@@ -486,3 +486,4 @@ window.PortfolioAnalyzer = PortfolioAnalyzer;
 // analyzer.runCompleteAnalysis();
 
 
+

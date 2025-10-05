@@ -324,3 +324,4 @@ The tool will analyze:
 window.CursorUIAnalyzer = CursorUIAnalyzer;
 
 
+
