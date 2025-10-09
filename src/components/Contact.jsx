@@ -216,7 +216,6 @@ const Contact = () => {
                         transition={{ delay: index * 0.1 + 0.8 }}
                       >
                         {social.icon}
-                        <span>{social.label}</span>
                       </motion.a>
                     ))}
                   </div>

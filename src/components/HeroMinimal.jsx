@@ -206,22 +206,6 @@ const HeroMinimal = () => {
         />
       ))}
 
-      {/* Optimized Cursor Glow Effect */}
-      <motion.div
-        className="cursor-glow"
-        style={{
-          x: useTransform(springX, (value) => value - 25),
-          y: useTransform(springY, (value) => value - 25),
-        }}
-        animate={{
-          opacity: isHovering ? 0.7 : 0.4,
-          scale: isHovering ? 1.3 : 1,
-        }}
-        transition={{ 
-          duration: 0.2, 
-          ease: [0.25, 0.46, 0.45, 0.94] 
-        }}
-      />
 
       {/* Main Content */}
       <div className="minimal-content">

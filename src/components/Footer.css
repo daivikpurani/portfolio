@@ -76,6 +76,24 @@
   font-size: 1.25rem;
   text-decoration: none;
   transition: all 0.3s ease;
+  position: relative;
+}
+
+.social-link svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: block;
+  margin: auto;
+  flex-shrink: 0;
+}
+
+/* Specific adjustments for different icons */
+.social-link svg[data-icon="github"] {
+  transform: translateY(-1px);
+}
+
+.social-link svg[data-icon="linkedin"] {
+  transform: translateY(1px);
 }
 
 .social-link:hover {
@@ -167,6 +185,11 @@
     width: 45px;
     height: 45px;
     font-size: 1.125rem;
+  }
+  
+  .social-link svg {
+    width: 1.125rem;
+    height: 1.125rem;
   }
 
   .scroll-to-top {

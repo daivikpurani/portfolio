@@ -13,19 +13,19 @@ const Footer = () => {
 
   const socialLinks = [
     {
-      icon: <FaGithub />,
+      icon: <FaGithub data-icon="github" />,
       href: personalInfo.github,
       label: 'GitHub',
       color: '#333'
     },
     {
-      icon: <FaLinkedin />,
+      icon: <FaLinkedin data-icon="linkedin" />,
       href: personalInfo.linkedin,
       label: 'LinkedIn',
       color: '#0077b5'
     },
     {
-      icon: <FaEnvelope />,
+      icon: <FaEnvelope data-icon="envelope" />,
       href: `mailto:${personalInfo.email}`,
       label: 'Email',
       color: '#ea4335'
