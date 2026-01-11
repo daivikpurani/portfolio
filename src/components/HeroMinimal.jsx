@@ -14,9 +14,9 @@ const HeroMinimal = () => {
 
   const roles = [
     'Software Engineer',
-    'Distributed Systems Expert',
-    'AWS TimestreamDB',
-    'Backend Architect'
+    'Distributed Systems Specialist',
+    'Backend Infrastructure Architect',
+    'Full Stack Developer'
   ];
 
   // Motion values for cursor tracking with optimized springs
@@ -226,22 +226,55 @@ const HeroMinimal = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
+          transition={{ duration: 0.8, ease: "easeInOut", delay: 0.3 }}
         >
           {roles[currentRole]}
         </motion.div>
 
-        {/* Subtle Description */}
+        {/* Enhanced Description */}
         <motion.p
           className="minimal-description"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
+          transition={{ duration: 1, delay: 0.5 }}
         >
-          Building distributed systems at scale
+          I build the systems others need to succeed
         </motion.p>
 
-        {/* Interactive Actions */}
+        {/* Key Metrics */}
+        <motion.div
+          className="hero-stats"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.1 }}
+        >
+          <div className="stat-item">
+            <div className="stat-value">3+</div>
+            <div className="stat-label">Years Experience</div>
+          </div>
+          <div className="stat-item">
+            <div className="stat-value">6+</div>
+            <div className="stat-label">Key Projects</div>
+          </div>
+        </motion.div>
+
+        {/* Story Section */}
+        <motion.div
+          className="hero-story"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.7 }}
+        >
+          <div className="story-headline">
+            <span className="story-icon">⛏️</span>
+            <h3 className="story-title">Selling Shovels in a Gold Rush</h3>
+          </div>
+          <p className="story-text">
+            While others chase the next big thing, I build the infrastructure they need. From event streaming pipelines to distributed databases, I craft the tools that power modern applications.
+          </p>
+        </motion.div>
+
+        {/* Enhanced CTA Actions */}
         <motion.div
           className="minimal-actions"
           initial={{ opacity: 0 }}
@@ -249,7 +282,7 @@ const HeroMinimal = () => {
           transition={{ duration: 1, delay: 1.2 }}
         >
           <motion.div
-            className="action-item"
+            className="action-item action-primary"
             onClick={() => handleClick('projects')}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
@@ -260,90 +293,11 @@ const HeroMinimal = () => {
             tabIndex={0}
             role="button"
             aria-label="View my projects"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >
             <span className="action-text">View Work</span>
-            <div className="action-line" />
           </motion.div>
-
-          <motion.div
-            className="action-item"
-            onClick={() => handleClick('contact')}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleClick('contact');
-              }
-            }}
-            tabIndex={0}
-            role="button"
-            aria-label="Get in touch"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span className="action-text">Get in Touch</span>
-            <div className="action-line" />
-          </motion.div>
-
-          <motion.div
-            className="action-item"
-            onClick={() => handleClick('resume')}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                handleClick('resume');
-              }
-            }}
-            tabIndex={0}
-            role="button"
-            aria-label="View resume"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span className="action-text">View Resume</span>
-            <div className="action-line" />
-          </motion.div>
-        </motion.div>
-
-        {/* Social Links */}
-        <motion.div
-          className="minimal-social"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.6 }}
-        >
-          <motion.a
-            href={personalInfo.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="social-link"
-            aria-label="GitHub Profile"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <FaGithub className="social-icon" />
-          </motion.a>
-          <motion.a
-            href={personalInfo.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="social-link"
-            aria-label="LinkedIn Profile"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <FaLinkedin className="social-icon" />
-          </motion.a>
-          <motion.a
-            href={`mailto:${personalInfo.email}`}
-            className="social-link"
-            aria-label="Send Email"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <FaEnvelope className="social-icon" />
-          </motion.a>
         </motion.div>
       </div>
 

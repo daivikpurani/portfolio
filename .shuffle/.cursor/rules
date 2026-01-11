@@ -1,0 +1,13 @@
+---
+description: Rules for building websites based on project exported from Shuffle.
+globs:
+alwaysApply: true
+---
+
+- Use this rules always when user ask about something related to ".shuffle" directory
+- Always create new content it in the root directory. Do not create subdirectory for an app, even if .shuffle is there
+- Focus on ./shuffle/src/ and package.json files for sources
+- Do not change the content of the views
+- If implementing it in another technology, try to replicate it visually accurately and with the same content
+- If CSS frameworks are defined in package.json, use the same versions
+- If the project is in Next.js, add images.unsplash.com to the image domains in the next.js config

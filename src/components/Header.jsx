@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes, FaCode } from 'react-icons/fa';
 import './Header.css';
 
-const Header = () => {
+const Header = ({ isMinimal = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -24,10 +24,19 @@ const Header = () => {
     { name: 'Contact', href: '#contact' }
   ];
 
+  const badgeText = isMinimal ? 'Full Version' : 'For Minimalists';
+
   const scrollToSection = (href) => {
     const element = document.querySelector(href);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
+
+  const handleVersionSwitch = () => {
+    if (window.toggleHeroVersion) {
+      window.toggleHeroVersion();
     }
     setIsMenuOpen(false);
   };
@@ -43,16 +52,25 @@ const Header = () => {
         <div className="header-content">
           <motion.div
             className="logo"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.1, rotate: 5 }}
+            whileTap={{ scale: 0.9 }}
           >
-            <a href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('#home'); }}>
-              DP
+            <a href="#home" onClick={(e) => { e.preventDefault(); scrollToSection('#home'); }} className="logo-link">
+              <FaCode className="logo-icon" />
             </a>
           </motion.div>
 
           <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>
             <ul className="nav-list">
+              <li className="nav-item minimal-badge-item">
+                <a
+                  href="#home"
+                  className="nav-link minimal-badge"
+                  onClick={(e) => { e.preventDefault(); handleVersionSwitch(); }}
+                >
+                  {badgeText}
+                </a>
+              </li>
               {navItems.map((item, index) => (
                 <motion.li
                   key={item.name}

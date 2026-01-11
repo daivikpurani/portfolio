@@ -16,7 +16,7 @@ function AppMinimal() {
       <div className="App">
         <ParticleBackground />
         <ThemeToggle />
-        <Header />
+        <Header minimalVersion={true} />
         <HeroMinimal />
         <About />
         <Skills />

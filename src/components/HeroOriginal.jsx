@@ -10,8 +10,8 @@ const Hero = () => {
   const [textIndex, setTextIndex] = useState(0);
 
   const texts = [
-    'Software Engineer @ AWS',
-    'TimestreamDB Specialist',
+    'Software Engineer',
+    'Backend Engineer',
     'Distributed Systems Expert',
     'Cloud Infrastructure Architect'
   ];
@@ -118,16 +118,6 @@ const Hero = () => {
           animate="visible"
         >
           <motion.div className="hero-text" variants={itemVariants}>
-            {/* AWS Badge */}
-            <motion.div
-              className="aws-badge"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              <FaAws className="aws-icon" />
-              <span>Currently at Amazon Web Services</span>
-            </motion.div>
 
             <motion.h1
               className="hero-title"
@@ -228,12 +218,12 @@ const Hero = () => {
           >
             <div className="image-container">
               <div className="image-placeholder">
-                <FaAws className="placeholder-icon" />
+                <FaCode className="placeholder-icon" />
               </div>
               <div className="image-overlay">
                 <div className="status-indicator">
                   <div className="status-dot"></div>
-                  <span>Building at AWS</span>
+                  <span>Building Solutions</span>
                 </div>
               </div>
             </div>

@@ -1,10 +1,13 @@
 // GitHub API service for fetching repositories and user data
+import ReadmeParser from '../utils/readmeParser.js';
+
 export class GitHubService {
   constructor(username) {
     this.username = username;
     this.baseUrl = 'https://api.github.com';
     this.cache = new Map();
     this.cacheTimeout = 5 * 60 * 1000; // 5 minutes
+    this.readmeCache = new Map(); // Separate cache for README content
   }
 
   async fetchWithCache(url, cacheKey) {
@@ -68,6 +71,12 @@ export class GitHubService {
   }
 
   async getRepositoryReadme(repoName) {
+    const cacheKey = `readme-${repoName}`;
+    const cached = this.readmeCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
+      return cached.data;
+    }
+
     try {
       const response = await fetch(
         `${this.baseUrl}/repos/${this.username}/${repoName}/readme`
@@ -76,44 +85,94 @@ export class GitHubService {
       
       const data = await response.json();
       // Decode base64 content
-      return atob(data.content);
+      const content = atob(data.content);
+      this.readmeCache.set(cacheKey, { data: content, timestamp: Date.now() });
+      return content;
     } catch (error) {
       console.error('Error fetching README:', error);
       return null;
     }
   }
 
+  async parseRepositoryReadme(repoName) {
+    const readmeContent = await this.getRepositoryReadme(repoName);
+    if (!readmeContent) return null;
+
+    const parser = new ReadmeParser(readmeContent);
+    return parser.parse();
+  }
+
   // Process repository data for portfolio display
-  processRepositoryData(repo) {
+  processRepositoryData(repo, readmeData = null) {
     const languages = this.extractLanguages(repo);
     const category = this.categorizeRepository(repo);
+    
+    // Merge README data if available
+    const description = readmeData?.description || repo.description || 'No description available';
+    const longDescription = readmeData?.longDescription || readmeData?.description || this.generateLongDescription(repo);
+    const readmeFeatures = readmeData?.features || [];
+    const readmeTechnologies = readmeData?.technologies || [];
+    const readmeLiveUrls = readmeData?.liveUrls || [];
+    const readmeChallenges = readmeData?.challenges || [];
+    const readmeImpact = readmeData?.impact || [];
+
+    // Merge technologies from README with extracted languages
+    const allTechnologies = [...new Set([...languages, ...readmeTechnologies])];
+    
+    // Use README features if available, otherwise fallback to generated ones
+    const features = readmeFeatures.length > 0 
+      ? readmeFeatures 
+      : this.extractFeatures(repo);
+
+    // Determine live URL (prioritize README URLs, then homepage, then extracted)
+    const liveUrl = readmeLiveUrls.length > 0 
+      ? readmeLiveUrls[0] 
+      : (repo.homepage || this.extractLiveUrl(repo));
+
+    // Use README challenges/impact if available
+    const challenges = readmeChallenges.length > 0 
+      ? readmeChallenges.join(' ') 
+      : this.generateChallenges(repo);
+    const impact = readmeImpact.length > 0 
+      ? readmeImpact.join(' ') 
+      : this.generateImpact(repo);
     
     return {
       id: repo.id,
       title: this.formatRepositoryName(repo.name),
-      description: repo.description || 'No description available',
-      longDescription: this.generateLongDescription(repo),
+      description: description,
+      longDescription: longDescription,
       image: this.getRepositoryImage(repo),
-      technologies: languages,
+      technologies: allTechnologies.length > 0 ? allTechnologies : languages,
       category: category,
       githubUrl: repo.html_url,
-      liveUrl: repo.homepage || this.extractLiveUrl(repo),
-      features: this.extractFeatures(repo),
-      challenges: this.generateChallenges(repo),
-      impact: this.generateImpact(repo),
+      liveUrl: liveUrl,
+      features: features,
+      challenges: challenges,
+      impact: impact,
       stars: repo.stargazers_count,
       forks: repo.forks_count,
       language: repo.language,
       updatedAt: repo.updated_at,
       createdAt: repo.created_at,
       size: repo.size,
-      topics: repo.topics || []
+      topics: repo.topics || [],
+      readmeParsed: !!readmeData
     };
   }
 
-  extractLanguages(repo) {
+  extractLanguages(repo, languageStats = null) {
     const languages = [];
     if (repo.language) languages.push(repo.language);
+    
+    // Add languages from language statistics if available
+    if (languageStats) {
+      const sortedLanguages = Object.entries(languageStats)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5)
+        .map(([lang]) => lang);
+      languages.push(...sortedLanguages);
+    }
     
     // Common technology mappings
     const techMap = {
@@ -133,6 +192,11 @@ export class GitHubService {
 
     if (repo.language && techMap[repo.language]) {
       languages.push(...techMap[repo.language]);
+    }
+
+    // Add topics as technologies
+    if (repo.topics && repo.topics.length > 0) {
+      languages.push(...repo.topics.filter(topic => topic.length < 30));
     }
 
     return [...new Set(languages)]; // Remove duplicates
@@ -228,8 +292,45 @@ export class GitHubService {
   extractLiveUrl(repo) {
     // Try to extract live URL from description or topics
     const description = repo.description || '';
-    const urlMatch = description.match(/https?:\/\/[^\s]+/);
+    const urlMatch = description.match(/https?:\/\/[^\s\)]+/);
     return urlMatch ? urlMatch[0] : null;
+  }
+
+  // Batch process repositories with README parsing
+  async processRepositoriesWithReadme(repos) {
+    if (!repos || repos.length === 0) return [];
+
+    // Process repositories in parallel batches to avoid rate limiting
+    const batchSize = 5;
+    const processedRepos = [];
+
+    for (let i = 0; i < repos.length; i += batchSize) {
+      const batch = repos.slice(i, i + batchSize);
+      const batchPromises = batch.map(async (repo) => {
+        try {
+          // Fetch README and language stats in parallel
+          const [readmeData, languageStats] = await Promise.all([
+            this.parseRepositoryReadme(repo.name).catch(() => null),
+            this.getRepositoryLanguages(repo.name).catch(() => null)
+          ]);
+
+          // Extract languages with stats
+          const languages = this.extractLanguages(repo, languageStats);
+          
+          // Process repository data with README
+          return this.processRepositoryData(repo, readmeData);
+        } catch (error) {
+          console.error(`Error processing repo ${repo.name}:`, error);
+          // Fallback to basic processing
+          return this.processRepositoryData(repo);
+        }
+      });
+
+      const batchResults = await Promise.all(batchPromises);
+      processedRepos.push(...batchResults);
+    }
+
+    return processedRepos;
   }
 
   extractFeatures(repo) {

@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaGithub, FaExternalLinkAlt, FaCode, FaDatabase, FaCloud, FaRocket, FaStar, FaCodeBranch, FaEye, FaSearch, FaFilter, FaSort } from 'react-icons/fa';
-import GitHubService from '../services/githubService';
+import { FaGithub, FaExternalLinkAlt, FaCode, FaDatabase, FaCloud, FaRocket, FaStar, FaCodeBranch, FaEye, FaSearch, FaFilter, FaSort, FaClock } from 'react-icons/fa';
+import { projects } from '../data/portfolioData';
 import './Projects.css';
 
 const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProject, setSelectedProject] = useState(null);
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('updated');
   const [viewMode, setViewMode] = useState('grid'); // grid or list
-  const [githubStats, setGithubStats] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [projectsPerPage] = useState(6);
 
@@ -23,43 +19,40 @@ const Projects = () => {
     threshold: 0.1
   });
 
-  const githubService = new GitHubService('daivikpurani');
+  // Calculate GitHub stats from static projects
+  const githubStats = projects.length > 0 ? {
+    publicRepos: projects.length,
+    totalStars: projects.reduce((sum, p) => sum + (p.stars || 0), 0),
+    followers: 0 // Can be updated manually if needed
+  } : null;
 
-  useEffect(() => {
-    fetchGitHubData();
-  }, []);
+  // Format relative time
+  const formatRelativeTime = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) return 'just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+    if (diffInSeconds < 31536000) return `${Math.floor(diffInSeconds / 2592000)}mo ago`;
+    return `${Math.floor(diffInSeconds / 31536000)}y ago`;
+  };
 
-  const fetchGitHubData = async () => {
-    try {
-      setLoading(true);
-      const [repos, profile] = await Promise.all([
-        githubService.getRepositories(),
-        githubService.getUserProfile()
-      ]);
-
-      if (repos) {
-        const processedProjects = repos
-          .filter(repo => !repo.fork && repo.name !== 'Portfolio') // Exclude forks and this portfolio
-          .map(repo => githubService.processRepositoryData(repo))
-          .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-
-        setProjects(processedProjects);
-      }
-
-      if (profile) {
-        setGithubStats({
-          publicRepos: profile.public_repos,
-          followers: profile.followers,
-          following: profile.following,
-          totalStars: repos ? repos.reduce((sum, repo) => sum + repo.stargazers_count, 0) : 0
-        });
-      }
-    } catch (err) {
-      setError('Failed to fetch GitHub data');
-      console.error('GitHub fetch error:', err);
-    } finally {
-      setLoading(false);
-    }
+  // Get featured projects (top starred or recently updated)
+  const getFeaturedProjects = () => {
+    return filteredAndSortedProjects
+      .filter(p => p.stars > 0 || (p.features && p.features.length > 0))
+      .sort((a, b) => {
+        // Prioritize by stars
+        if (b.stars !== a.stars) return b.stars - a.stars;
+        // Then by features
+        const aFeatures = a.features ? a.features.length : 0;
+        const bFeatures = b.features ? b.features.length : 0;
+        return bFeatures - aFeatures;
+      })
+      .slice(0, 3);
   };
 
   const categories = ['All', ...new Set(projects.map(project => project.category))];
@@ -152,40 +145,6 @@ const Projects = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <section id="projects" className="projects section">
-        <div className="container">
-          <div className="loading-container">
-            <motion.div
-              className="loading-spinner"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            >
-              <FaCode />
-            </motion.div>
-            <p>Loading your amazing projects...</p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  if (error) {
-    return (
-      <section id="projects" className="projects section">
-        <div className="container">
-          <div className="error-container">
-            <h2>Unable to load projects</h2>
-            <p>{error}</p>
-            <button onClick={fetchGitHubData} className="btn btn-primary">
-              Try Again
-            </button>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="projects" className="projects section">
@@ -198,9 +157,9 @@ const Projects = () => {
           animate={inView ? "visible" : "hidden"}
         >
           <motion.div className="projects-header" variants={itemVariants}>
-            <h2 className="section-title">GitHub Projects</h2>
+            <h2 className="section-title">Projects</h2>
             <p className="section-subtitle">
-              Real-time showcase of my GitHub repositories with live stats and filtering
+              Showcase of my GitHub repositories and projects
             </p>
             
             {githubStats && (
@@ -213,13 +172,46 @@ const Projects = () => {
                   <FaStar />
                   <span>{githubStats.totalStars} Stars</span>
                 </div>
-                <div className="stat-item">
-                  <FaEye />
-                  <span>{githubStats.followers} Followers</span>
-                </div>
               </div>
             )}
           </motion.div>
+
+          {/* Featured Projects Section */}
+          {getFeaturedProjects().length > 0 && (
+            <motion.div className="featured-projects-section" variants={itemVariants}>
+              <h3 className="featured-title">
+                <FaStar />
+                Featured Projects
+              </h3>
+              <div className="featured-projects-grid">
+                {getFeaturedProjects().map((project) => (
+                  <motion.div
+                    key={project.id}
+                    className="featured-project-card"
+                    variants={projectVariants}
+                    initial="hidden"
+                    animate="visible"
+                    whileHover={{ scale: 1.02, y: -5 }}
+                    onClick={() => setSelectedProject(project)}
+                  >
+                    <div className="featured-project-image">
+                      <img src={project.image} alt={project.title} />
+                      <div className="featured-badge">Featured</div>
+                    </div>
+                    <div className="featured-project-content">
+                      <h4>{project.title}</h4>
+                      <p>{project.description}</p>
+                      <div className="featured-project-stats">
+                        <span><FaStar /> {project.stars}</span>
+                        <span><FaCodeBranch /> {project.forks}</span>
+                        {project.readmeParsed && <span className="readme-badge">README</span>}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
 
           <motion.div className="projects-controls" variants={itemVariants}>
             <div className="search-filter-container">
@@ -336,11 +328,30 @@ const Projects = () => {
                   <div className="project-content">
                     <div className="project-header">
                       <h3 className="project-title">{project.title}</h3>
-                      <div className="project-language">
-                        {project.language}
+                      <div className="project-header-badges">
+                        {project.language && (
+                          <div className="project-language">
+                            {project.language}
+                          </div>
+                        )}
+                        {project.features && project.features.length > 0 && (
+                          <span className="readme-indicator" title="Detailed project info">
+                            📄
+                          </span>
+                        )}
                       </div>
                     </div>
                     <p className="project-description">{project.description}</p>
+                    
+                    {project.features && project.features.length > 0 && (
+                      <div className="project-features-preview">
+                        {project.features.slice(0, 2).map((feature, index) => (
+                          <span key={index} className="feature-preview">
+                            ✓ {typeof feature === 'string' ? feature.substring(0, 40) : feature}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                     
                     <div className="project-technologies">
                       {project.technologies.slice(0, 4).map((tech, index) => (
@@ -353,7 +364,8 @@ const Projects = () => {
                     
                     <div className="project-meta">
                       <span className="updated-date">
-                        Updated {new Date(project.updatedAt).toLocaleDateString()}
+                        <FaClock />
+                        Updated {formatRelativeTime(project.updatedAt)}
                       </span>
                     </div>
                   </div>
@@ -411,7 +423,7 @@ const Projects = () => {
           <motion.div className="projects-cta" variants={itemVariants}>
             <p>Want to see more of my work?</p>
             <a
-              href={`https://github.com/${githubService.username}`}
+              href="https://github.com/daivikpurani"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary"
@@ -452,8 +464,19 @@ const Projects = () => {
                       <FaCodeBranch />
                       <span>{selectedProject.forks}</span>
                     </div>
+                    {selectedProject.language && (
+                      <div className="modal-stat">
+                        <span className="language">{selectedProject.language}</span>
+                      </div>
+                    )}
+                    {selectedProject.features && selectedProject.features.length > 0 && (
+                      <div className="modal-stat readme-badge-stat">
+                        <span className="readme-badge">Detailed Info</span>
+                      </div>
+                    )}
                     <div className="modal-stat">
-                      <span className="language">{selectedProject.language}</span>
+                      <FaClock />
+                      <span>{formatRelativeTime(selectedProject.updatedAt)}</span>
                     </div>
                   </div>
                 </div>
@@ -471,25 +494,43 @@ const Projects = () => {
                 </div>
                 
                 <div className="modal-info">
-                  <p className="modal-description">{selectedProject.longDescription}</p>
+                  <p className="modal-description">{selectedProject.longDescription || selectedProject.description}</p>
                   
-                  <div className="modal-features">
-                    <h4>Key Features</h4>
-                    <ul>
-                      {selectedProject.features.map((feature, index) => (
-                        <li key={index}>{feature}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="modal-technologies">
-                    <h4>Technologies Used</h4>
-                    <div className="tech-tags">
-                      {selectedProject.technologies.map((tech, index) => (
-                        <span key={index} className="tech-tag">{tech}</span>
-                      ))}
+                  {selectedProject.features && selectedProject.features.length > 0 && (
+                    <div className="modal-features">
+                      <h4>Key Features</h4>
+                      <ul>
+                        {selectedProject.features.map((feature, index) => (
+                          <li key={index}>{typeof feature === 'string' ? feature : JSON.stringify(feature)}</li>
+                        ))}
+                      </ul>
                     </div>
-                  </div>
+                  )}
+                  
+                  {selectedProject.technologies && selectedProject.technologies.length > 0 && (
+                    <div className="modal-technologies">
+                      <h4>Technologies Used</h4>
+                      <div className="tech-tags">
+                        {selectedProject.technologies.map((tech, index) => (
+                          <span key={index} className="tech-tag">{tech}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {selectedProject.challenges && (
+                    <div className="modal-challenges">
+                      <h4>Challenges & Architecture</h4>
+                      <p>{typeof selectedProject.challenges === 'string' ? selectedProject.challenges : selectedProject.challenges.join(' ')}</p>
+                    </div>
+                  )}
+                  
+                  {selectedProject.impact && (
+                    <div className="modal-impact">
+                      <h4>Impact</h4>
+                      <p>{typeof selectedProject.impact === 'string' ? selectedProject.impact : selectedProject.impact.join(' ')}</p>
+                    </div>
+                  )}
                   
                   <div className="modal-links">
                     <a
